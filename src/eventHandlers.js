@@ -1,39 +1,10 @@
-// eventHandlers.js
-// รวม handler สำหรับแต่ละ event type
+const getSourceTypeReply = require('./utils/getSourceTypeReply')
 
 module.exports = (client) => ({
    message: (event) => {
-      const sourceType = event.source.type
-      if (event.message.type === 'text') {
-         if (sourceType === 'user') {
-            return client.replyMessage(event.replyToken, [
-               {
-                  type: 'text',
-                  text: 'นี่คือการคุยแบบส่วนตัว 👤'
-               },
-               {
-                  type: 'text',
-                  text: `คุณส่งข้อความ: ${event.message.text}`
-               }
-            ])
-         } else if (sourceType === 'group') {
-            return client.replyMessage(event.replyToken, {
-               type: 'text',
-               text: 'นี่คือการคุยในกลุ่ม 👥'
-            })
-         } else if (sourceType === 'room') {
-            return client.replyMessage(event.replyToken, {
-               type: 'text',
-               text: 'นี่คือการคุยในห้องแชท 👨‍👩‍👧‍👦'
-            })
-         }
-      } else if (event.message.type === 'image') {
-         if (sourceType === 'user') {
-            return client.replyMessage(event.replyToken, {
-               type: 'text',
-               text: 'คุณส่งรูปภาพมาให้ครับ 📷'
-            })
-         }
+      const reply = getSourceTypeReply(event.source.type, event)
+      if (reply) {
+         return client.replyMessage(event.replyToken, reply)
       }
    },
    follow: (event) => {
