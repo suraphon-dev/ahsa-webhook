@@ -14,7 +14,7 @@ const config = {
 // สร้าง client
 const client = new line.Client(config)
 
-const getEventHandlers = require('./src/eventHandlers')
+const getEventHandlers = require('./src/utils/eventHandlers')
 const eventHandlers = getEventHandlers(client)
 
 // webhook endpoint

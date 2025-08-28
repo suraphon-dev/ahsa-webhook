@@ -1,4 +1,4 @@
-const getSourceTypeReply = require('./utils/getSourceTypeReply')
+const getSourceTypeReply = require('./getSourceTypeReply')
 
 module.exports = (client) => ({
    message: (event) => {
