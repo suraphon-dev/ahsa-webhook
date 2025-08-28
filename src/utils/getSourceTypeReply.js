@@ -1,5 +1,6 @@
 const { getTextReplyConditionUser, getTextReplyConditionGroup } = require('../message/getTextReplyCondition')
 const { getImageReplyConditionUser, getImageReplyConditionGroup } = require('../message/getImageReplyCondition')
+const { getStickerReplyConditionUser, getStickerReplyConditionGroup } = require('../message/getStickerReplyCondition')
 
 /**
  * สร้างข้อความตอบกลับตามประเภท source และ event
@@ -41,16 +42,13 @@ function getSourceTypeReply(sourceType, event) {
 
       // สติกเกอร์
       case 'sticker':
-         if (sourceType === 'user') {
-            return [
-               { type: 'text', text: '👤 คุณส่งสติกเกอร์มาให้ครับ 🎉' },
-               { type: 'text', text: `keywords: ${event.message.keywords}` }
-            ]
-         } else if (sourceType === 'group') {
-            return [
-               { type: 'text', text: '👥 คุณส่งสติกเกอร์มาให้ในกลุ่มครับ 🎉' },
-               { type: 'text', text: `keywords: ${event.message.keywords}` }
-            ]
+         switch (sourceType) {
+            case 'user':
+               return getStickerReplyConditionUser(event.message.keywords)
+            case 'group':
+               return getStickerReplyConditionGroup(event.message.keywords)
+            default:
+               return null
          }
 
       // ตำแหน่ง
