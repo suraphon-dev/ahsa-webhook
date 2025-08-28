@@ -14,6 +14,9 @@ const config = {
 // สร้าง client
 const client = new line.Client(config)
 
+const getEventHandlers = require('./src/eventHandlers')
+const eventHandlers = getEventHandlers(client)
+
 // webhook endpoint
 app.post('/webhook', line.middleware(config), (req, res) => {
    Promise.all(req.body.events.map(handleEvent))
@@ -24,19 +27,9 @@ app.post('/webhook', line.middleware(config), (req, res) => {
       })
 })
 
-// ฟังก์ชัน handle event
 function handleEvent(event) {
-   console.log(event)
-   // ignore non-text message
-   if (event.type !== 'message' || event.message.type !== 'text') {
-      return Promise.resolve(null)
-   }
-
-   // reply ข้อความเดิมกลับไป
-   return client.replyMessage(event.replyToken, {
-      type: 'text',
-      text: `คุณพิมพ์: ${event.message.text}`
-   })
+   const handler = eventHandlers[event.type] || eventHandlers.default
+   return handler(event)
 }
 
 // start server
