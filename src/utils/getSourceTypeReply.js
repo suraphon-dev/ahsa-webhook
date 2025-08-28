@@ -69,8 +69,30 @@ function getSourceTypeReply(sourceType, event) {
          }
          return null
 
+      // วิดีโอ
+      case 'video':
+         switch (sourceType) {
+            case 'user':
+               return { type: 'text', text: '👤 คุณส่งวิดีโอมา 🎬' }
+            case 'group':
+               return { type: 'text', text: '👥 คุณส่งวิดีโอมาในกลุ่ม 🎬' }
+            default:
+               return null
+         }
+
+      // เสียง
+      case 'audio':
+         return { type: 'text', text: 'คุณส่งไฟล์เสียงมา 🔊' }
+
+      // ไฟล์
+      case 'file':
+         return { type: 'text', text: `คุณส่งไฟล์: ${message.fileName} (${message.fileSize} bytes)` }
+
       default:
-         return null
+         return client.replyMessage(event.replyToken, {
+            type: 'text',
+            text: 'ผมยังไม่รองรับข้อความประเภทนี้ครับ 🙏'
+         })
    }
 }
 
