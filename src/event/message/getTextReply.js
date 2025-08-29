@@ -1,4 +1,5 @@
 const flexCard = require('../../flex/flex-ex')
+const flexPostback = require('../../flex/flex-postback')
 const flexGroup = require('../../flex/flex-group')
 
 function getTextReplyConditionUser(text) {
@@ -10,6 +11,12 @@ function getTextReplyConditionUser(text) {
             type: 'flex',
             altText: 'นี่คือการ์ดแบบ Flex',
             contents: flexCard.apply()
+         }
+      case 'flex-postback':
+         return {
+            type: 'flex',
+            altText: 'นี่คือการ์ดแบบ Flex Postback',
+            contents: flexPostback.apply()
          }
       default:
          return [{ type: 'text', text: `👤 คุณส่งข้อความ: ${text}` }]
