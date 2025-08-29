@@ -1,5 +1,5 @@
-const flexCard = require('../flex/flex-ex')
-const flexGroup = require('../flex/flex-group')
+const flexCard = require('../../flex/flex-ex')
+const flexGroup = require('../../flex/flex-group')
 
 function getTextReplyConditionUser(text) {
    switch (text) {
@@ -31,7 +31,15 @@ function getTextReplyConditionGroup(text) {
    }
 }
 
-module.exports = {
-   getTextReplyConditionUser,
-   getTextReplyConditionGroup
+function getTextReply(sourceType, text) {
+   switch (sourceType) {
+      case 'user':
+         return getTextReplyConditionUser(text)
+      case 'group':
+         return getTextReplyConditionGroup(text)
+      default:
+         return null
+   }
 }
+
+module.exports = { getTextReply }

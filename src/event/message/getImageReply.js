@@ -16,15 +16,21 @@ function getImageReplyConditionGroup() {
       { type: 'text', text: '👤 คุณส่งรูปภาพมาให้ในกลุ่มครับ 📷' },
       {
          type: 'image',
-         originalContentUrl:
-            'https://contentshifu.com/wp-content/uploads/2025/01/20241223-143859.jpeg',
-         previewImageUrl:
-            'https://contentshifu.com/wp-content/uploads/2025/01/20241223-143859.jpeg'
+         originalContentUrl: 'https://contentshifu.com/wp-content/uploads/2025/01/20241223-143859.jpeg',
+         previewImageUrl: 'https://contentshifu.com/wp-content/uploads/2025/01/20241223-143859.jpeg'
       }
    ]
 }
 
-module.exports = {
-   getImageReplyConditionUser,
-   getImageReplyConditionGroup
+function getImageReply(sourceType) {
+   switch (sourceType) {
+      case 'user':
+         return getImageReplyConditionUser()
+      case 'group':
+         return getImageReplyConditionGroup()
+      default:
+         return null
+   }
 }
+
+module.exports = { getImageReply }

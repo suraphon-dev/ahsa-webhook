@@ -1,6 +1,4 @@
-const { getTextReplyConditionUser, getTextReplyConditionGroup } = require('../message/getTextReplyCondition')
-const { getImageReplyConditionUser, getImageReplyConditionGroup } = require('../message/getImageReplyCondition')
-const { getStickerReplyConditionUser, getStickerReplyConditionGroup } = require('../message/getStickerReplyCondition')
+const { getTextReply, getImageReply, getStickerReply, getLocationReply, getVideoReply, getFileReply, getAudioReply } = require('../event/message')
 
 /**
  * สร้างข้อความตอบกลับตามประเภท source และ event
@@ -18,75 +16,26 @@ function getSourceTypeReply(sourceType, event) {
    console.log(event.message)
 
    switch (event.message.type) {
-      // ข้อความ
       case 'text':
-         switch (sourceType) {
-            case 'user':
-               return getTextReplyConditionUser(sourceText)
-            case 'group':
-               return getTextReplyConditionGroup(sourceText)
-            default:
-               return null
-         }
+         return getTextReply(sourceType, sourceText)
 
-      // รูปภาพ
       case 'image':
-         switch (sourceType) {
-            case 'user':
-               return getImageReplyConditionUser()
-            case 'group':
-               return getImageReplyConditionGroup()
-            default:
-               return null
-         }
+         return getImageReply(sourceType)
 
-      // สติกเกอร์
       case 'sticker':
-         switch (sourceType) {
-            case 'user':
-               return getStickerReplyConditionUser(event.message.keywords)
-            case 'group':
-               return getStickerReplyConditionGroup(event.message.keywords)
-            default:
-               return null
-         }
+         return getStickerReply(sourceType, event.message.keywords)
 
-      // ตำแหน่ง
       case 'location':
-         if (sourceType === 'user') {
-            return [
-               { type: 'text', text: '👤 คุณส่งตำแหน่งของคุณมาให้ครับ 📍' },
-               { type: 'text', text: `latitude: ${event.message.latitude}, longitude: ${event.message.longitude}` },
-               { type: 'text', text: `address: ${event.message.address}` }
-            ]
-         } else if (sourceType === 'group') {
-            console.log('object')
-            return [
-               { type: 'text', text: '👥 คุณส่งตำแหน่งของกลุ่มมาให้ครับ 📍' },
-               { type: 'text', text: `latitude: ${event.message.latitude}, longitude: ${event.message.longitude}` },
-               { type: 'text', text: `address: ${event.message.address}` }
-            ]
-         }
-         return null
+         return getLocationReply(sourceType, event.message.latitude, event.message.longitude, event.message.address)
 
-      // วิดีโอ
       case 'video':
-         switch (sourceType) {
-            case 'user':
-               return { type: 'text', text: '👤 คุณส่งวิดีโอมา 🎬' }
-            case 'group':
-               return { type: 'text', text: '👥 คุณส่งวิดีโอมาในกลุ่ม 🎬' }
-            default:
-               return null
-         }
+         return getVideoReply(sourceType)
 
-      // เสียง
       case 'audio':
-         return { type: 'text', text: 'คุณส่งไฟล์เสียงมา 🔊' }
+         return getAudioReply(sourceType)
 
-      // ไฟล์
       case 'file':
-         return { type: 'text', text: `คุณส่งไฟล์: ${message.fileName} (${message.fileSize} bytes)` }
+         return getFileReply(sourceType, event.message.fileName, event.message.fileSize)
 
       default:
          return client.replyMessage(event.replyToken, {

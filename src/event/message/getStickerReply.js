@@ -12,7 +12,15 @@ function getStickerReplyConditionGroup(keywords) {
    ]
 }
 
-module.exports = {
-   getStickerReplyConditionUser,
-   getStickerReplyConditionGroup
+function getStickerReply(sourceType, keywords) {
+   switch (sourceType) {
+      case 'user':
+         return getStickerReplyConditionUser(keywords)
+      case 'group':
+         return getStickerReplyConditionGroup(keywords)
+      default:
+         return null
+   }
 }
+
+module.exports = { getStickerReply }
